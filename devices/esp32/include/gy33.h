@@ -68,12 +68,14 @@ void gy33_err_print(char *fn_name, char *read_write, uint8_t addr)
     fprintf(stderr, "ERROR in gy33::%s:\n\t%s@%02X failed\n", fn_name, read_write, addr);
 }
 
-esp_err_t internal_gy33_init()
+esp_err_t internal_gy33_init(uint8_t led_brightness, bool auto_white_balance)
 {
     esp_err_t ret = esp_i2c_init_device(&gy33, GY_33_ADDR, GY_33_PORT, &gy33_i2c_config);
     if (CHECK_ERR(ret))
         fprintf(stderr, "ERROR in gy33::internal_gy33_init: initialization failed\n");
-    esp_i2c_write_byte(&gy33, GY_CONFIG_REG, 0x50, WAIT_50_MS);
+    uint8_t led_brightness_cmd = 0x0a - led_brightness;
+    esp_i2c_write_byte(&gy33, GY_CONFIG_REG, (led_brightness << 4) | (uint8_t)auto_white_balance,
+                       WAIT_50_MS);
     vTaskDelay(1000 / portTICK_PERIOD_MS);
     return ret;
 }

@@ -44,6 +44,15 @@ static inline int nanboxToInt(sinanbox_t v)
     return 0;
 }
 
+static inline bool nanboxToBool(sinanbox_t v)
+{
+    if (NANBOX_ISBOOL(v)) {
+        return NANBOX_BOOL(v);
+    } else {
+        sifault(sinter_fault_type);
+    }
+}
+
 static inline unsigned int nanboxToUint(sinanbox_t v)
 {
     int r = nanboxToInt(v);
@@ -90,8 +99,11 @@ static sinanbox_t led_fade(uint8_t argc, sinanbox_t *argv)
 
 static sinanbox_t color_sensor_init(uint8_t argc, sinanbox_t *argv)
 {
-    CHECK_ARGS(2);
-    internal_gy33_init();
+    CHECK_ARGS(1);
+    int led_brightness = nanboxToUint(argv[0]);
+    bool auto_white_balancing = nanboxToBool(argv[1]);
+    internal_gy33_init(led_brightness, auto_white_balancing);
+    return NANBOX_OFUNDEF();
 }
 
 static sinanbox_t color_get_rgbc_raw(uint8_t argc, sinanbox_t *argv)
