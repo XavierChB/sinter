@@ -17,3 +17,4 @@ add_executable(sinter-esp32
 target_link_libraries(sinter-esp32 idf::esp32 idf::freertos sinter)
 idf_build_executable(sinter-esp32)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)

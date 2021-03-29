@@ -3,8 +3,8 @@
 
 #include "config.h"
 
-#include <stdint.h>
 #include <math.h>
+#include <stdint.h>
 
 #include "fault.h"
 
@@ -55,9 +55,9 @@
 #ifndef __cplusplus
 typedef
 #endif
-union
+    union
 #ifdef __cplusplus
-sinanbox_t
+    sinanbox_t
 #endif
 {
   float as_float;
@@ -73,7 +73,7 @@ sinanbox_t
 #ifndef __cplusplus
 sinanbox_t
 #endif
-;
+    ;
 _Static_assert(sizeof(sinanbox_t) == 4, "sinanbox_t has wrong size");
 
 #define NANBOX_TYPEMASK 0xfff00000u
@@ -85,9 +85,14 @@ _Static_assert(sizeof(sinanbox_t) == 4, "sinanbox_t has wrong size");
 #define NANBOX_TPTR 0xffc00000u
 #define NANBOX_TIFN 0xff900000u
 
-#define NANBOX_CASES_TINT case NANBOX_TINT: case 0x7ff00000u:
-#define NANBOX_CASES_TPTR case NANBOX_TPTR: case 0xffd00000u: \
-  case 0xffe00000u: case 0xfff00000u:
+#define NANBOX_CASES_TINT                                                                          \
+  case NANBOX_TINT:                                                                                \
+  case 0x7ff00000u:
+#define NANBOX_CASES_TPTR                                                                          \
+  case NANBOX_TPTR:                                                                                \
+  case 0xffd00000u:                                                                                \
+  case 0xffe00000u:                                                                                \
+  case 0xfff00000u:
 #define NANBOX_GETTYPE(val) ((val).as_u32 & NANBOX_TYPEMASK)
 
 #define NANBOX_ISFLOAT(val) (nanbox_isfloat(val))
@@ -104,12 +109,14 @@ _Static_assert(sizeof(sinanbox_t) == 4, "sinanbox_t has wrong size");
 #define NANBOX_BOOL(val) ((val).as_u32 & 1u)
 #ifdef __cplusplus
 inline int32_t nanbox_int(sinanbox_t val) {
-  struct { int32_t n : 21; } v = { static_cast<int32_t>(val.as_u32) };
+  struct {
+    int32_t n : 21;
+  } v = {static_cast<int32_t>(val.as_u32)};
   return v.n;
 }
 #define NANBOX_INT(val) (nanbox_int((val)))
 #else
-#define NANBOX_INT(val) (((struct { int32_t n : 21; }) { .n = (val).as_u32 }).n)
+#define NANBOX_INT(val) (((struct { int32_t n : 21; }){.n = (val).as_u32}).n)
 #endif
 #define NANBOX_PTR(val) ((val).as_u32 & 0x3fffffu)
 #define NANBOX_TOFLOAT(val) (nanbox_tofloat((val)))
@@ -123,14 +130,15 @@ inline int32_t nanbox_int(sinanbox_t val) {
 #define NANBOX_WITH_I32(i) (sinanbox_t(i, 0u))
 #define NANBOX_OFFLOAT(f) (sinanbox_t(f))
 #else
-#define NANBOX_WITH_I32(i) ((sinanbox_t) { .as_u32 = (i) })
-#define NANBOX_OFFLOAT(val) (isnan((float)(val)) ? (NANBOX_CANONICAL_NAN) : ((sinanbox_t) { .as_float = (val) }))
+#define NANBOX_WITH_I32(i) ((sinanbox_t){.as_u32 = (i)})
+#define NANBOX_OFFLOAT(val)                                                                        \
+  (isnan((float)(val)) ? (NANBOX_CANONICAL_NAN) : ((sinanbox_t){.as_float = (val)}))
 #endif
 
 #define NANBOX_OFEMPTY() (NANBOX_WITH_I32(NANBOX_TEMPTY))
 #define NANBOX_OFUNDEF() (NANBOX_WITH_I32(NANBOX_TUNDEF))
 #define NANBOX_OFNULL() (NANBOX_WITH_I32(NANBOX_TNULL))
-#define NANBOX_OFBOOL(val) (NANBOX_WITH_I32(((unsigned int) !!(val)) | NANBOX_TBOOL))
+#define NANBOX_OFBOOL(val) (NANBOX_WITH_I32(((unsigned int)!!(val)) | NANBOX_TBOOL))
 /**
  * Creates a NaN-box of an integer.
  *
@@ -138,12 +146,11 @@ inline int32_t nanbox_int(sinanbox_t val) {
  *
  * Use NANBOX_WRAP_INT if it may not be within range.
  */
-#define NANBOX_OFINT(val) (NANBOX_WITH_I32(((val) & 0x1fffffu) | NANBOX_TINT))
-#define NANBOX_OFPTR(val) (NANBOX_WITH_I32(((val) & 0x3fffffu) | NANBOX_TPTR))
-#define NANBOX_WRAP_INT(v) (((v) >= NANBOX_INTMIN && (v) <= NANBOX_INTMAX) ? \
-  NANBOX_OFINT(v) : NANBOX_OFFLOAT(v))
-#define NANBOX_WRAP_UINT(v) (((v) <= NANBOX_INTMAX) ? \
-  NANBOX_OFINT(v) : NANBOX_OFFLOAT(v))
+#define NANBOX_OFINT(val) (NANBOX_WITH_I32(((val)&0x1fffffu) | NANBOX_TINT))
+#define NANBOX_OFPTR(val) (NANBOX_WITH_I32(((val)&0x3fffffu) | NANBOX_TPTR))
+#define NANBOX_WRAP_INT(v)                                                                         \
+  (((v) >= NANBOX_INTMIN && (v) <= NANBOX_INTMAX) ? NANBOX_OFINT(v) : NANBOX_OFFLOAT(v))
+#define NANBOX_WRAP_UINT(v) (((v) <= NANBOX_INTMAX) ? NANBOX_OFINT(v) : NANBOX_OFFLOAT(v))
 
 #define NANBOX_OFIFN_PRIMITIVE(number) (NANBOX_WITH_I32(NANBOX_TIFN | (number)))
 #define NANBOX_OFIFN_VM(number) (NANBOX_WITH_I32(NANBOX_TIFN | 0x100 | (number)))
@@ -165,7 +172,7 @@ SINTER_INLINE _Bool nanbox_isfloat(sinanbox_t v) {
 
 SINTER_INLINE float nanbox_tofloat(sinanbox_t v) {
   if (NANBOX_ISINT(v)) {
-    return (float) NANBOX_INT(v);
+    return (float)NANBOX_INT(v);
   } else if (NANBOX_ISFLOAT(v)) {
     return NANBOX_FLOAT(v);
   } else {
@@ -176,9 +183,9 @@ SINTER_INLINE float nanbox_tofloat(sinanbox_t v) {
 
 SINTER_INLINE uint32_t nanbox_tou32(sinanbox_t v) {
   if (NANBOX_ISINT(v)) {
-    return (uint32_t) NANBOX_INT(v);
+    return (uint32_t)NANBOX_INT(v);
   } else if (NANBOX_ISFLOAT(v)) {
-    return (uint32_t) NANBOX_FLOAT(v);
+    return (uint32_t)NANBOX_FLOAT(v);
   }
   sifault(sinter_fault_type);
   return 0;
@@ -188,7 +195,7 @@ SINTER_INLINE int32_t nanbox_toi32(sinanbox_t v) {
   if (NANBOX_ISINT(v)) {
     return NANBOX_INT(v);
   } else if (NANBOX_ISFLOAT(v)) {
-    return (int32_t) NANBOX_FLOAT(v);
+    return (int32_t)NANBOX_FLOAT(v);
   }
   sifault(sinter_fault_type);
   return 0;
