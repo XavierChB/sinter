@@ -22,16 +22,16 @@
 #define LEDC_CH0_CHANNEL LEDC_CHANNEL_0
 #define LEDC_CH1_GPIO    (19)
 #define LEDC_CH1_CHANNEL LEDC_CHANNEL_1
-#define LEDC_CH2_GPIO    (4)
-#define LEDC_CH2_CHANNEL LEDC_CHANNEL_2
-#define LEDC_CH3_GPIO    (5)
-#define LEDC_CH3_CHANNEL LEDC_CHANNEL_3
-#define LEDC_CH4_GPIO    (17)
-#define LEDC_CH4_CHANNEL LEDC_CHANNEL_4
-#define LEDC_CH5_GPIO    (16)
-#define LEDC_CH5_CHANNEL LEDC_CHANNEL_5
+//#define LEDC_CH2_GPIO    (4)
+//#define LEDC_CH2_CHANNEL LEDC_CHANNEL_2
+//#define LEDC_CH3_GPIO    (5)
+//#define LEDC_CH3_CHANNEL LEDC_CHANNEL_3
+//#define LEDC_CH4_GPIO    (17)
+//#define LEDC_CH4_CHANNEL LEDC_CHANNEL_4
+//#define LEDC_CH5_GPIO    (16)
+//#define LEDC_CH5_CHANNEL LEDC_CHANNEL_5
 
-#define LEDC_TEST_CH_NUM (6)
+#define LEDC_TEST_CH_NUM (2)
 #define LEDC_TEST_DUTY   (5000)
 
 // Set LED Controller with previously prepared configuration
@@ -49,30 +49,30 @@ ledc_channel_config_t ledc_channel[LEDC_TEST_CH_NUM] = {
      .speed_mode = LEDC_MODE,
      .hpoint = 0,
      .timer_sel = LEDC_TIMER},
-    {.channel = LEDC_CH2_CHANNEL,
-     .duty = 0,
-     .gpio_num = LEDC_CH2_GPIO,
-     .speed_mode = LEDC_MODE,
-     .hpoint = 0,
-     .timer_sel = LEDC_TIMER},
-    {.channel = LEDC_CH3_CHANNEL,
-     .duty = 0,
-     .gpio_num = LEDC_CH3_GPIO,
-     .speed_mode = LEDC_MODE,
-     .hpoint = 0,
-     .timer_sel = LEDC_TIMER},
-    {.channel = LEDC_CH4_CHANNEL,
-     .duty = 0,
-     .gpio_num = LEDC_CH4_GPIO,
-     .speed_mode = LEDC_MODE,
-     .hpoint = 0,
-     .timer_sel = LEDC_TIMER},
-    {.channel = LEDC_CH5_CHANNEL,
-     .duty = 0,
-     .gpio_num = LEDC_CH5_GPIO,
-     .speed_mode = LEDC_MODE,
-     .hpoint = 0,
-     .timer_sel = LEDC_TIMER},
+    //{.channel = LEDC_CH2_CHANNEL,
+    //.duty = 0,
+    //.gpio_num = LEDC_CH2_GPIO,
+    //.speed_mode = LEDC_MODE,
+    //.hpoint = 0,
+    //.timer_sel = LEDC_TIMER},
+    //{.channel = LEDC_CH3_CHANNEL,
+    //.duty = 0,
+    //.gpio_num = LEDC_CH3_GPIO,
+    //.speed_mode = LEDC_MODE,
+    //.hpoint = 0,
+    //.timer_sel = LEDC_TIMER},
+    //{.channel = LEDC_CH4_CHANNEL,
+    //.duty = 0,
+    //.gpio_num = LEDC_CH4_GPIO,
+    //.speed_mode = LEDC_MODE,
+    //.hpoint = 0,
+    //.timer_sel = LEDC_TIMER},
+    //{.channel = LEDC_CH5_CHANNEL,
+    //.duty = 0,
+    //.gpio_num = LEDC_CH5_GPIO,
+    //.speed_mode = LEDC_MODE,
+    //.hpoint = 0,
+    //.timer_sel = LEDC_TIMER},
 };
 
 ledc_timer_config_t ledc_timer = {

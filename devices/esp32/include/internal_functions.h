@@ -12,6 +12,10 @@
 #include "freertos/task.h"
 #include "gy33.h"
 #include "led.h"
+#include "motor.h"
+#include "ultrasonic.h"
+
+#define DBG
 
 #define CHECK_ARGS(n)                                           \
     do {                                                        \
@@ -146,6 +150,46 @@ static sinanbox_t color_get_color_temperature(uint8_t argc, sinanbox_t *argv)
     return wrap_integer(res);
 }
 
+static sinanbox_t motor_init(uint8_t argc, sinanbox_t *argv)
+{
+    CHECK_ARGS(0);
+    internal_motor_init(&default_motor_config);
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t motor_step(uint8_t argc, sinanbox_t *argv)
+{
+    CHECK_ARGS(1);
+    int step = nanboxToInt(argv[0]);
+    internal_motor_step(&default_motor_config, step);
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t motor_full_steps(uint8_t argc, sinanbox_t *argv)
+{
+    CHECK_ARGS(2);
+    int steps = nanboxToInt(argv[0]);
+    bool direction = nanboxToBool(argv[1]);
+    internal_motor_full_steps(&default_motor_config, steps, direction);
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t ultrasonic_init(uint8_t argc, sinanbox_t *argv)
+{
+    CHECK_ARGS(0);
+    internal_ultrasonic_init(&default_ultrasonic_config);
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t ultrasonic_measure_cm(uint8_t argc, sinanbox_t *argv)
+{
+    CHECK_ARGS(1);
+    int max_distance = nanboxToInt(argv[0]);
+    uint32_t res;
+    internal_ultrasonic_measure_cm(&default_ultrasonic_config, max_distance, &res);
+    return wrap_integer(res);
+}
+
 static sinanbox_t esp_wait(uint8_t argc, sinanbox_t *argv)
 {
     CHECK_ARGS(1);
@@ -163,6 +207,11 @@ static const sivmfnptr_t internals[] = {init_led,
                                         color_get_rgb,
                                         color_get_lux,
                                         color_get_color_temperature,
+                                        motor_init,
+                                        motor_step,
+                                        motor_full_steps,
+                                        ultrasonic_init,
+                                        ultrasonic_measure_cm,
                                         esp_wait};
 
 void setupInternals()
