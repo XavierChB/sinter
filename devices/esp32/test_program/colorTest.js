@@ -1,4 +1,4 @@
-color_sensor_init(5, false);
+color_sensor_init(1, true);
 
 display("init successful");
 
