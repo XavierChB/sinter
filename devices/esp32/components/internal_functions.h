@@ -15,8 +15,6 @@
 #include "motor.h"
 #include "ultrasonic.h"
 
-#define DBG
-
 #define CHECK_ARGS(n)                                           \
     do {                                                        \
         if (argc < n) { sifault(sinter_fault_function_arity); } \
@@ -198,21 +196,21 @@ static sinanbox_t esp_wait(uint8_t argc, sinanbox_t *argv)
     if (DBG) fprintf(stderr, "waited %dms\n", duration);
 }
 
-static const sivmfnptr_t internals[] = {init_led,
-                                        led_on,
-                                        led_off,
-                                        led_fade,
-                                        color_sensor_init,
-                                        color_get_rgbc_raw,
-                                        color_get_rgb,
-                                        color_get_lux,
-                                        color_get_color_temperature,
-                                        motor_init,
-                                        motor_step,
-                                        motor_full_steps,
-                                        ultrasonic_init,
-                                        ultrasonic_measure_cm,
-                                        esp_wait};
+const sivmfnptr_t internals[] = {init_led,
+                                 led_on,
+                                 led_off,
+                                 led_fade,
+                                 color_sensor_init,
+                                 color_get_rgbc_raw,
+                                 color_get_rgb,
+                                 color_get_lux,
+                                 color_get_color_temperature,
+                                 motor_init,
+                                 motor_step,
+                                 motor_full_steps,
+                                 ultrasonic_init,
+                                 ultrasonic_measure_cm,
+                                 esp_wait};
 
 void setupInternals()
 {

@@ -10,11 +10,12 @@ idf_build_process(esp32
   BUILD_DIR ${CMAKE_BINARY_DIR})
 
 add_subdirectory(../../vm libsinter)
+add_subdirectory(./components)
 
 add_executable(sinter-esp32
   src/main.c)
 
-target_link_libraries(sinter-esp32 idf::esp32 idf::freertos sinter)
+target_link_libraries(sinter-esp32 idf::esp32 idf::freertos sinter components)
 idf_build_executable(sinter-esp32)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)

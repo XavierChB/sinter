@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "../include/internal_functions.h"
+#include "../components/internal_functions.h"
 
 static _Noreturn void app_exit(void)
 {
