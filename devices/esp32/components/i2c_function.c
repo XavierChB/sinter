@@ -89,6 +89,7 @@ esp_err_t esp_i2c_write_16(i2c_device_t *device, uint8_t reg_addr, uint16_t data
                 data, device->address, reg_addr);
     }
     i2c_cmd_link_delete(cmd);
+    return ret;
 }
 
 esp_err_t esp_i2c_read_byte(i2c_device_t *device, uint8_t reg_addr, uint8_t *res, int wait_ms)

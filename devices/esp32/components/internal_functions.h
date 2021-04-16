@@ -97,6 +97,7 @@ static sinanbox_t led_fade(uint8_t argc, sinanbox_t *argv)
         fprintf(stderr, "led#%d: fade; target_duty: %d; fade_time: %dms\n", channel, target_duty,
                 fade_time);
     internal_led_fade(channel, target_duty, fade_time);
+    return NANBOX_OFUNDEF();
 }
 
 static sinanbox_t color_sensor_init(uint8_t argc, sinanbox_t *argv)
@@ -222,6 +223,7 @@ static sinanbox_t esp_wait(uint8_t argc, sinanbox_t *argv)
     int duration = nanboxToInt(argv[0]);
     vTaskDelay(duration / portTICK_PERIOD_MS);
     if (DBG) fprintf(stderr, "waited %dms\n", duration);
+    return NANBOX_OFUNDEF();
 }
 
 const sivmfnptr_t internals[] = {init_led,

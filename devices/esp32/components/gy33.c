@@ -63,6 +63,7 @@ esp_err_t internal_get_rgb(rgb *rgb_store)
             return ret;
         }
     }
+    return ESP_OK;
 }
 
 esp_err_t internal_get_lux(uint16_t *lux)
