@@ -20,6 +20,14 @@ void internal_motor_init(stepper_pins *stepper_ptr)
     gpio_set_direction(stepper_ptr->pin4, GPIO_MODE_OUTPUT);
 }
 
+void internal_motor_stop(stepper_pins *stepper_ptr)
+{
+    gpio_set_level(stepper_ptr->pin1, 0);
+    gpio_set_level(stepper_ptr->pin2, 0);
+    gpio_set_level(stepper_ptr->pin3, 0);
+    gpio_set_level(stepper_ptr->pin4, 0);
+}
+
 void internal_motor_step(stepper_pins *stepper_ptr, int phase)
 {
     gpio_set_level(stepper_ptr->pin1, phase & 1);
@@ -51,12 +59,4 @@ void internal_motor_full_steps(stepper_pins *stepper_ptr, int steps, bool dir)
     }
 
     internal_motor_stop(stepper_ptr);
-}
-
-void internal_motor_stop(stepper_pins *stepper_ptr)
-{
-    gpio_set_level(stepper_ptr->pin1, 0);
-    gpio_set_level(stepper_ptr->pin2, 0);
-    gpio_set_level(stepper_ptr->pin3, 0);
-    gpio_set_level(stepper_ptr->pin4, 0);
 }
