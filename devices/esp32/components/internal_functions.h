@@ -164,6 +164,42 @@ static sinanbox_t motor_full_steps(uint8_t argc, sinanbox_t *argv)
     return NANBOX_OFUNDEF();
 }
 
+static sinanbox_t imu_init(uint8_t argc, sinanbox_t *argv)
+{
+    // TODO;
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t imu_get_pitch(uint8_t argc, sinanbox_t *argv)
+{
+    // TODO;
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t imu_get_yaw(uint8_t argc, sinanbox_t *argv)
+{
+    // TODO;
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t imu_get_roll(uint8_t argc, sinanbox_t *argv)
+{
+    // TODO;
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t imu_set_zero_angle(uint8_t argc, sinanbox_t *argv)
+{
+    // TODO;
+    return NANBOX_OFUNDEF();
+}
+
+static sinanbox_t imu_get_angle(uint8_t argc, sinanbox_t *argv)
+{
+    // TODO;
+    return NANBOX_OFUNDEF();
+}
+
 static sinanbox_t ultrasonic_init(uint8_t argc, sinanbox_t *argv)
 {
     CHECK_ARGS(0);
@@ -199,6 +235,12 @@ const sivmfnptr_t internals[] = {init_led,
                                  color_get_color_temperature,
                                  motor_init,
                                  motor_full_steps,
+                                 imu_init,
+                                 imu_get_pitch,
+                                 imu_get_yaw,
+                                 imu_get_roll,
+                                 imu_set_zero_angle,
+                                 imu_get_angle,
                                  ultrasonic_init,
                                  ultrasonic_measure_cm,
                                  esp_wait};
