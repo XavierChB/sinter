@@ -151,15 +151,7 @@ static sinanbox_t color_get_color_temperature(uint8_t argc, sinanbox_t *argv)
 static sinanbox_t motor_init(uint8_t argc, sinanbox_t *argv)
 {
     CHECK_ARGS(0);
-    internal_motor_init(&default_motor_config);
-    return NANBOX_OFUNDEF();
-}
-
-static sinanbox_t motor_step(uint8_t argc, sinanbox_t *argv)
-{
-    CHECK_ARGS(1);
-    int step = nanboxToInt(argv[0]);
-    internal_motor_step(&default_motor_config, step);
+    internal_motor_init(&default_left_motor_config);
     return NANBOX_OFUNDEF();
 }
 
@@ -168,7 +160,7 @@ static sinanbox_t motor_full_steps(uint8_t argc, sinanbox_t *argv)
     CHECK_ARGS(2);
     int steps = nanboxToInt(argv[0]);
     bool direction = nanboxToBool(argv[1]);
-    internal_motor_full_steps(&default_motor_config, steps, direction);
+    internal_motor_full_steps(&default_left_motor_config, steps, direction);
     return NANBOX_OFUNDEF();
 }
 
@@ -206,7 +198,6 @@ const sivmfnptr_t internals[] = {init_led,
                                  color_get_lux,
                                  color_get_color_temperature,
                                  motor_init,
-                                 motor_step,
                                  motor_full_steps,
                                  ultrasonic_init,
                                  ultrasonic_measure_cm,

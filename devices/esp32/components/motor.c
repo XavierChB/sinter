@@ -10,7 +10,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-const uint8_t steps_port[8] = {0x09, 0x01, 0x03, 0x02, 0x06, 0x04, 0x0c, 0x08};
+const uint8_t steps_port[4] = {0x03, 0x06, 0x0C, 0x09};
 
 void internal_motor_init(stepper_pins *stepper_ptr)
 {
@@ -20,12 +20,12 @@ void internal_motor_init(stepper_pins *stepper_ptr)
     gpio_set_direction(stepper_ptr->pin4, GPIO_MODE_OUTPUT);
 }
 
-void internal_motor_step(stepper_pins *stepper_ptr, int step)
+void internal_motor_step(stepper_pins *stepper_ptr, int phase)
 {
-    gpio_set_level(stepper_ptr->pin1, step & 1);
-    gpio_set_level(stepper_ptr->pin2, (step & 2) >> 1);
-    gpio_set_level(stepper_ptr->pin3, (step & 4) >> 2);
-    gpio_set_level(stepper_ptr->pin4, (step & 8) >> 3);
+    gpio_set_level(stepper_ptr->pin1, phase & 1);
+    gpio_set_level(stepper_ptr->pin2, (phase & 2) >> 1);
+    gpio_set_level(stepper_ptr->pin3, (phase & 4) >> 2);
+    gpio_set_level(stepper_ptr->pin4, (phase & 8) >> 3);
 }
 
 void internal_motor_full_steps(stepper_pins *stepper_ptr, int steps, bool dir)
@@ -34,20 +34,29 @@ void internal_motor_full_steps(stepper_pins *stepper_ptr, int steps, bool dir)
     int i = 0;
 
     if (dir) {
-        i = 0;
         for (n = 0; n < steps; n++) {
-            if (i > 8) i = 0;
+            i = n % 4;
             internal_motor_step(stepper_ptr, steps_port[i]);
-            vTaskDelay(5 / portTICK_PERIOD_MS);
-            i++;
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+            fprintf(stderr, "%d\n", n);
         }
     } else {
         i = 7;
         for (n = 0; n < steps; n++) {
             if (i < 0) i = 7;
             internal_motor_step(stepper_ptr, steps_port[i]);
-            vTaskDelay(5 / portTICK_PERIOD_MS);
+            vTaskDelay(10 / portTICK_PERIOD_MS);
             i--;
         }
     }
+
+    internal_motor_stop(stepper_ptr);
+}
+
+void internal_motor_stop(stepper_pins *stepper_ptr)
+{
+    gpio_set_level(stepper_ptr->pin1, 0);
+    gpio_set_level(stepper_ptr->pin2, 0);
+    gpio_set_level(stepper_ptr->pin3, 0);
+    gpio_set_level(stepper_ptr->pin4, 0);
 }
